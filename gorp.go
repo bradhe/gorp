@@ -176,17 +176,10 @@ func (t *TableMap) SetKeys(isAutoIncr bool, fieldNames ...string) *TableMap {
 //
 // Automatically calls ResetSql() to ensure SQL statements are regenerated.
 //
-// Panics if fieldNames length < 2.
-//
 func (t *TableMap) SetUniqueTogether(fieldNames ...string) *TableMap {
-	if len(fieldNames) < 2 {
-		panic(fmt.Sprintf(
-			"gorp: SetUniqueTogether: must provide at least two fieldNames to set uniqueness constraint."))
-	}
-
-	columns := make([]string, 0)
-	for _, name := range fieldNames {
-		columns = append(columns, name)
+	columns := make([]string, len(fieldNames))
+	for i, name := range fieldNames {
+		columns[i] = name
 	}
 	t.uniqueTogether = append(t.uniqueTogether, columns)
 	t.ResetSql()
